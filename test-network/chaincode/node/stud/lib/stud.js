@@ -4,6 +4,38 @@ const { Contract } = require('fabric-contract-api');
 
 class testContract extends Contract {
 
+    async checkEntityType(ctx, id) {
+        try {
+            let entityState = await ctx.stub.getState(id);
+            if (!entityState || entityState.length === 0) {
+                return false;
+            } else {
+                return true;
+            }
+        } catch (err) {
+            return false;
+        }
+    }
+
+    async addMarks(ctx, studentInfo) {
+
+        try {
+            let studMarks = JSON.parse(studentInfo);
+            if (await this.checkEntityType(ctx, studMarks["id"])) {
+                throw new Error(`Fulfillment exists`);
+            }
+
+            studMarks["hash"] = ctx.stub.getTxID();
+            await ctx.stub.putState(studMarks["id"], Buffer.from(JSON.stringify(studMarks)));
+            return studMarks["hash"].toString();
+
+        } catch (error) {
+            let jsonResp = {};
+            jsonResp.error = 'Failed to decode JSON of: ' + studMarks["id"];
+            throw new Error(jsonResp);
+        }
+    }
+
     async queryMarks(ctx, studentId) {
         let marksAsBytes = await ctx.stub.getState(studentId);
         if (!marksAsBytes || marksAsBytes.toString().length <= 0) {
@@ -11,16 +43,6 @@ class testContract extends Contract {
         }
         let marks = JSON.parse(marksAsBytes.toString());
         return JSON.stringify(marks);
-    }
-
-    async addMarks(ctx, studentId, sub1, sub2, sub3) {
-        let marks = {
-            subj1: sub1,
-            subj2: sub2,
-            subj3: sub3
-        };
-        await ctx.stub.putState(studentId, Buffer.from(JSON.stringify(marks)));
-        console.log('Student marks added to the ledger..');
     }
 
     async deleteMarks(ctx, studentId) {
