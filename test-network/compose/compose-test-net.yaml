@@ -15,7 +15,6 @@ networks:
     name: fabric_test
 
 services:
-
   orderer.example.com:
     container_name: orderer.example.com
     image: hyperledger/fabric-orderer:latest
