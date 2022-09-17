@@ -132,6 +132,7 @@ chaincodeInvokeInit() {
     echo "===================== Succesfully Initilized the chaincode===================== "
 }
 
+
 chaincodeAddStudent() {
     echo -e "\n===================== Started Add student Chanicode Function===================== "
     setEnvVarsForPeer0Org1
