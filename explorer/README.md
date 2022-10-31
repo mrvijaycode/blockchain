@@ -41,3 +41,8 @@ The latest script added, it will run quickly
 ```
 ./explorerRun.sh
 ```
+
+If the transactions not updating with latest, need to chek the network name, privatkey in connection-profile. If still the issue persists execute below command in explorer folder
+
+> docker network prune -f
+> docker volume prune -f
