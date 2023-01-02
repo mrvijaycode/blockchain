@@ -13,8 +13,8 @@ systemctl enable docker
 sudo curl -L "https://github.com/docker/compose/releases/download/1.29.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
 
-#cd hyperledger
-./pullBinaries.sh
+cd hyperledger
+./pullbinaries.sh
 docker network create tools_network
 ./network.sh down
 ./network.sh up createChannel
